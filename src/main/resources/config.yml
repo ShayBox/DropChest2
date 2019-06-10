@@ -1,0 +1,6 @@
+default-radius: 5 # Default radius of containers in Blocks (dropchest.radius.set) to let users set their own radius
+max-radius: 10 # Maximum radius of containers in Blocks (dropchest.radius.setBig) to let users exceed this limit
+poll-interval: 1 # Interval to poll for items to add to containers in ticks
+wait-for-pickup: false # Whether or not to wait for pickup delay
+allow-protect: true # Whether or not allow players to protect containers
+default-protect: false # Whether or not protect containers by default
