@@ -1,5 +1,8 @@
-package com.shaybox.dropchest2;
+package com.shaybox.dropchest2.listener;
 
+import com.shaybox.dropchest2.DropChest;
+import com.shaybox.dropchest2.DropChestContainer;
+import com.shaybox.dropchest2.DropChestPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,10 +18,10 @@ import java.util.*;
 import static org.bukkit.ChatColor.*;
 import static org.bukkit.Material.*;
 
-public class DropChestPlayerListener implements Listener {
+public class PlayerListener implements Listener {
 	private DropChest plugin;
 
-	DropChestPlayerListener(DropChest plugin) {
+	public PlayerListener(DropChest plugin) {
 		this.plugin = plugin;
 	}
 

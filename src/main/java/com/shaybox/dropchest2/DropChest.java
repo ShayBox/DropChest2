@@ -1,5 +1,7 @@
 package com.shaybox.dropchest2;
 
+import com.shaybox.dropchest2.listener.BlockListener;
+import com.shaybox.dropchest2.listener.PlayerListener;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,31 +22,27 @@ public final class DropChest extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		// Load config class
-		ConfigurationSerialization.registerClass(DropChestContainer.class);
+		initConfigs();
 
-		// Load configs
-		saveDefaultConfig();
-		saveDefaultContainersConfig();
-		loadContainersConfig();
-
-		// Load command
 		PluginCommand command = getCommand("dropchest");
 		if (command != null) command.setExecutor(new DropChestCommand(this));
 
-		// Load task
-		getScheduler().scheduleSyncRepeatingTask(this, new DropChestEntityWatcher(this), 0, getConfig().getInt("poll-interval"));
+		getScheduler().scheduleSyncRepeatingTask(this, new EntityWatcher(this), 0, getConfig().getInt("poll-interval"));
 
-		// Load listeners
-		getPluginManager().registerEvents(new DropChestPlayerListener(this), this);
-		getPluginManager().registerEvents(new DropChestBlockListener(this), this);
+		getPluginManager().registerEvents(new BlockListener(this), this);
+		getPluginManager().registerEvents(new PlayerListener(this), this);
+	}
+
+	private void initConfigs() {
+		ConfigurationSerialization.registerClass(DropChestContainer.class);
+
+		saveDefaultConfig();
+		saveDefaultContainersConfig();
 	}
 
 	private void saveDefaultContainersConfig() {
 		if (!containersConfigFile.exists()) saveResource("containers.yml", false);
-	}
 
-	private void loadContainersConfig() {
 		try {
 			containersConfig.load(containersConfigFile);
 		} catch (IOException | InvalidConfigurationException e) {
@@ -52,7 +50,7 @@ public final class DropChest extends JavaPlugin {
 		}
 	}
 
-	void saveContainersConfig() {
+	public void saveContainersConfig() {
 		try {
 			containersConfig.save(containersConfigFile);
 		} catch (IOException e) {
@@ -61,7 +59,7 @@ public final class DropChest extends JavaPlugin {
 	}
 
 	@SuppressWarnings("unchecked")
-	List<DropChestContainer> getContainers() {
+	public List<DropChestContainer> getContainers() {
 		return (List<DropChestContainer>) containersConfig.getList("containers");
 	}
 }

@@ -15,7 +15,7 @@ public class DropChestContainer implements ConfigurationSerializable {
 	private int radius;
 	private boolean protect;
 
-	DropChestContainer(Location location, Material material, UUID owner, int radius, boolean protect) {
+	public DropChestContainer(Location location, Material material, UUID owner, int radius, boolean protect) {
 		this.location = location;
 		this.material = material;
 		this.owner = owner;
@@ -23,56 +23,56 @@ public class DropChestContainer implements ConfigurationSerializable {
 		this.protect = protect;
 	}
 
-	public DropChestContainer(Map<String, Object> serializedMedicalNote) {
-		this.location = (Location) serializedMedicalNote.get("location");
-		this.material = Material.valueOf((String) serializedMedicalNote.get("material"));
-		this.owner = UUID.fromString((String) serializedMedicalNote.get("owner"));
-		this.radius = (int) serializedMedicalNote.get("radius");
-		this.protect = (boolean) serializedMedicalNote.get("protect");
+	public DropChestContainer(Map<String, Object> map) {
+		this.location = (Location) map.get("location");
+		this.material = Material.valueOf((String) map.get("material"));
+		this.owner = UUID.fromString((String) map.get("owner"));
+		this.radius = (int) map.get("radius");
+		this.protect = (boolean) map.get("protect");
 	}
 
 	@Override
 	public Map<String, Object> serialize() {
-		HashMap<String, Object> mapSerializer = new HashMap<>();
+		HashMap<String, Object> map = new HashMap<>();
 
-		mapSerializer.put("location", this.location);
-		mapSerializer.put("material", this.material.toString());
-		mapSerializer.put("owner", this.owner.toString());
-		mapSerializer.put("radius", this.radius);
-		mapSerializer.put("protect", this.protect);
+		map.put("location", this.location);
+		map.put("material", this.material.toString());
+		map.put("owner", this.owner.toString());
+		map.put("radius", this.radius);
+		map.put("protect", this.protect);
 
-		return mapSerializer;
+		return map;
 	}
 
-	Location getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
-	Material getMaterial() {
+	public Material getMaterial() {
 		return material;
 	}
 
-	UUID getOwner() {
+	public UUID getOwner() {
 		return owner;
 	}
 
-	void setOwner(UUID owner) {
+	public void setOwner(UUID owner) {
 		this.owner = owner;
 	}
 
-	int getRadius() {
+	public int getRadius() {
 		return radius;
 	}
 
-	void setRadius(int radius) {
+	public void setRadius(int radius) {
 		this.radius = radius;
 	}
 
-	boolean isProtected() {
+	public boolean isProtected() {
 		return protect;
 	}
 
-	void setProtect(boolean protect) {
+	public void setProtect(boolean protect) {
 		this.protect = protect;
 	}
 }

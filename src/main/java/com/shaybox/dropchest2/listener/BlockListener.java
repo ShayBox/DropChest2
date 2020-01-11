@@ -1,19 +1,27 @@
-package com.shaybox.dropchest2;
+package com.shaybox.dropchest2.listener;
 
+import com.shaybox.dropchest2.DropChest;
+import com.shaybox.dropchest2.DropChestContainer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
 
-public class DropChestBlockListener implements Listener {
+public class BlockListener implements Listener {
 	private DropChest plugin;
 
-	DropChestBlockListener(DropChest plugin) {
+	public BlockListener(DropChest plugin) {
 		this.plugin = plugin;
+	}
+
+	@EventHandler
+	public void onChunkUnload(ChunkUnloadEvent event) {
+		event.getChunk().load();
 	}
 
 	@EventHandler

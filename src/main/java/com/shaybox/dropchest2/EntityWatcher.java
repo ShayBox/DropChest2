@@ -4,31 +4,33 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import static org.bukkit.Bukkit.getWorlds;
-import static org.bukkit.entity.EntityType.DROPPED_ITEM;
 
-public class DropChestEntityWatcher implements Runnable {
+public class EntityWatcher implements Runnable {
 	private DropChest plugin;
 
-	DropChestEntityWatcher(DropChest plugin) {
+	EntityWatcher(DropChest plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public void run() {
-		for (World world : getWorlds())
-			for (Entity entity : world.getEntities()) {
-				if (!entity.getType().equals(DROPPED_ITEM)) continue;
-				Item item = (Item) entity;
-				if (!plugin.getConfig().getBoolean("wait-for-pickup") || item.getPickupDelay() > 0) continue;
+		getWorlds()
+			.stream()
+			.map(World::getEntities)
+			.flatMap(Collection::stream)
+			.filter(e -> e instanceof Item)
+			.map(Item.class::cast)
+			.filter(i -> !plugin.getConfig().getBoolean("wait-for-pickup") || i.getPickupDelay() <= 0)
+			.forEach(item -> {
 				for (DropChestContainer dropChestContainer : plugin.getContainers()) {
 					Location location = dropChestContainer.getLocation();
 					Block block = location.getBlock();
@@ -48,6 +50,6 @@ public class DropChestEntityWatcher implements Runnable {
 						plugin.saveContainersConfig();
 					}
 				}
-			}
+			});
 	}
 }
